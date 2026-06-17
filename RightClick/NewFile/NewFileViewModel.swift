@@ -1,5 +1,6 @@
 import Foundation
 import AppKit
+import Combine
 import RightClickCore
 
 @MainActor
@@ -14,7 +15,7 @@ final class NewFileViewModel: ObservableObject {
     init(
         baseName: String = "Untitled",
         selectedFormat: FileFormat = .txt,
-        targetDirectory: URL,
+        targetDirectory: URL = FileManager.default.homeDirectoryForCurrentUser,
         action: NewFileAction = NewFileAction()
     ) {
         self.baseName = baseName
@@ -24,7 +25,7 @@ final class NewFileViewModel: ObservableObject {
     }
 
     static func preview() -> NewFileViewModel {
-        NewFileViewModel(targetDirectory: FileManager.default.homeDirectoryForCurrentUser)
+        NewFileViewModel()
     }
 
     func create() {
