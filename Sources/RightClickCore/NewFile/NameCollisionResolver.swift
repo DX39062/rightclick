@@ -9,8 +9,11 @@ public enum NameCollisionResolver {
         retryLimit: Int = 500
     ) throws -> URL {
         let cleanBaseName = baseName.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !cleanBaseName.isEmpty else {
+        guard !cleanBaseName.isEmpty, cleanBaseName == (cleanBaseName as NSString).lastPathComponent else {
             throw ActionError.invalidFileName
+        }
+        guard retryLimit > 0 else {
+            throw ActionError.collisionResolutionFailed
         }
 
         for index in 1...retryLimit {

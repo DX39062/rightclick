@@ -47,4 +47,25 @@ final class NameCollisionResolverTests: XCTestCase {
             XCTAssertEqual(error as? ActionError, .invalidFileName)
         }
     }
+
+    func testRejectsPathSeparatorsInBaseName() {
+        XCTAssertThrowsError(
+            try NameCollisionResolver.availableURL(directory: directory, baseName: "folder/Untitled", fileExtension: "txt")
+        ) { error in
+            XCTAssertEqual(error as? ActionError, .invalidFileName)
+        }
+    }
+
+    func testRejectsNonPositiveRetryLimitWithoutTrapping() {
+        XCTAssertThrowsError(
+            try NameCollisionResolver.availableURL(
+                directory: directory,
+                baseName: "Untitled",
+                fileExtension: "txt",
+                retryLimit: 0
+            )
+        ) { error in
+            XCTAssertEqual(error as? ActionError, .collisionResolutionFailed)
+        }
+    }
 }
