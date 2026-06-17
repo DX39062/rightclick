@@ -33,6 +33,7 @@ final class OfficeBuilderTests: XCTestCase {
         let names = try archiveEntryNames(url)
         XCTAssertTrue(names.contains("[Content_Types].xml"))
         XCTAssertTrue(names.contains("_rels/.rels"))
+        XCTAssertTrue(names.contains("xl/_rels/workbook.xml.rels"))
         XCTAssertTrue(names.contains("xl/workbook.xml"))
         XCTAssertTrue(names.contains("xl/worksheets/sheet1.xml"))
     }
@@ -44,16 +45,13 @@ final class OfficeBuilderTests: XCTestCase {
         let names = try archiveEntryNames(url)
         XCTAssertTrue(names.contains("[Content_Types].xml"))
         XCTAssertTrue(names.contains("_rels/.rels"))
+        XCTAssertTrue(names.contains("ppt/_rels/presentation.xml.rels"))
         XCTAssertTrue(names.contains("ppt/presentation.xml"))
         XCTAssertTrue(names.contains("ppt/slides/slide1.xml"))
     }
 
     private func archiveEntryNames(_ url: URL) throws -> Set<String> {
-        guard let archive = Archive(url: url, accessMode: .read) else {
-            XCTFail("Expected readable ZIP archive at \(url.path)")
-            return []
-        }
-
+        let archive = try Archive(url: url, accessMode: .read)
         return Set(archive.map(\.path))
     }
 }

@@ -8,16 +8,18 @@ enum OpenXMLPackageWriter {
             throw ActionError.writeFailed("Destination already exists: \(url.path)")
         }
 
-        guard let archive = Archive(url: url, accessMode: .create) else {
-            throw ActionError.writeFailed("Could not create archive at \(url.path)")
-        }
-
         do {
+            let archive = try Archive(url: url, accessMode: .create)
             for path in entries.keys.sorted() {
                 let data = Data(entries[path]!.utf8)
-                try archive.addEntry(with: path, type: .file, uncompressedSize: UInt32(data.count)) { position, size in
-                    data.subdata(in: Int(position)..<Int(position + size))
-                }
+                try archive.addEntry(
+                    with: path,
+                    type: .file,
+                    uncompressedSize: Int64(data.count),
+                    provider: { (position: Int64, size: Int) throws -> Data in
+                        data.subdata(in: Int(position)..<Int(position) + size)
+                    }
+                )
             }
         } catch {
             try? fileManager.removeItem(at: url)
