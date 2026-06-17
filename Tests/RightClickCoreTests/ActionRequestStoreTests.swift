@@ -37,4 +37,25 @@ final class ActionRequestStoreTests: XCTestCase {
             XCTAssertEqual(error as? ActionError, .malformedRequest)
         }
     }
+
+    func testReadsLegacyRequestWithoutFractionalSeconds() throws {
+        let store = ActionRequestStore(containerDirectory: directory)
+        let json = """
+        {
+          "id": "00000000-0000-0000-0000-000000000001",
+          "createdAt": "1970-01-01T00:00:10Z",
+          "context": {
+            "currentDirectory": "file:///tmp/",
+            "selectedItems": []
+          }
+        }
+        """
+        try json.data(using: .utf8)!.write(
+            to: directory.appendingPathComponent(ActionRequestStore.defaultFileName)
+        )
+
+        let request = try store.readLatest()
+
+        XCTAssertEqual(request.createdAt, Date(timeIntervalSince1970: 10))
+    }
 }

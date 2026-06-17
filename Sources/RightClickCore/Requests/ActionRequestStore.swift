@@ -64,7 +64,8 @@ private extension JSONDecoder {
         decoder.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
             let value = try container.decode(String.self)
-            guard let date = ISO8601DateFormatter.rightClick.date(from: value) else {
+            guard let date = ISO8601DateFormatter.rightClick.date(from: value)
+                ?? ISO8601DateFormatter.rightClickWithoutFractionalSeconds.date(from: value) else {
                 throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid ISO-8601 date: \(value)")
             }
             return date
@@ -77,6 +78,12 @@ private extension ISO8601DateFormatter {
     static let rightClick: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
+    }()
+
+    static let rightClickWithoutFractionalSeconds: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime]
         return formatter
     }()
 }
