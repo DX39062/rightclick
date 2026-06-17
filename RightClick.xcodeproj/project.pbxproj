@@ -11,6 +11,7 @@
 		A10000010000000000000002 /* RightClickApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000002 /* RightClickApp.swift */; };
 		A10000010000000000000003 /* NewFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000003 /* NewFileView.swift */; };
 		A10000010000000000000004 /* NewFileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000004 /* NewFileViewModel.swift */; };
+		A10000010000000000000006 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000007 /* AppGroup.swift */; };
 		A10000010000000000000005 /* RightClickCore in Frameworks */ = {isa = PBXBuildFile; productRef = A70000010000000000000001 /* RightClickCore */; };
 /* End PBXBuildFile section */
 
@@ -21,6 +22,7 @@
 		A20000010000000000000004 /* NewFileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFileViewModel.swift; sourceTree = "<group>"; };
 		A20000010000000000000005 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A20000010000000000000006 /* RightClick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RightClick.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000010000000000000007 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +52,7 @@
 				A20000010000000000000002 /* RightClickApp.swift */,
 				A20000010000000000000005 /* Info.plist */,
 				A40000010000000000000003 /* NewFile */,
+				A40000010000000000000005 /* Shared */,
 			);
 			path = RightClick;
 			sourceTree = "<group>";
@@ -61,6 +64,14 @@
 				A20000010000000000000004 /* NewFileViewModel.swift */,
 			);
 			path = NewFile;
+			sourceTree = "<group>";
+		};
+		A40000010000000000000005 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000007 /* AppGroup.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 		A40000010000000000000004 /* Products */ = {
@@ -137,6 +148,7 @@
 				A10000010000000000000002 /* RightClickApp.swift in Sources */,
 				A10000010000000000000003 /* NewFileView.swift in Sources */,
 				A10000010000000000000004 /* NewFileViewModel.swift in Sources */,
+				A10000010000000000000006 /* AppGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

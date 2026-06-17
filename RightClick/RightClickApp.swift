@@ -6,7 +6,9 @@ struct RightClickApp: App {
 
     var body: some Scene {
         WindowGroup("New File") {
-            NewFileView(viewModel: NewFileViewModel.preview())
+            NewFileView(
+                viewModel: NewFileViewModel(targetDirectory: appDelegate.latestTargetDirectory())
+            )
         }
         .windowResizability(.contentSize)
     }
