@@ -10,12 +10,14 @@ let package = Package(
         .library(name: "RightClickCore", targets: ["RightClickCore"])
     ],
     dependencies: [
-        .package(path: "Vendor/ZIPFoundation")
+        .package(url: "https://github.com/weichsel/ZIPFoundation.git", from: "0.9.19")
     ],
     targets: [
         .target(
             name: "RightClickCore",
-            dependencies: ["ZIPFoundation"]
+            dependencies: [
+                .product(name: "ZIPFoundation", package: "ZIPFoundation")
+            ]
         ),
         .testTarget(
             name: "RightClickCoreTests",
