@@ -1,7 +1,7 @@
 {
   "pins" : [
     {
-      "identity" : "rightclick-zipfoundation",
+      "identity" : "zipfoundation",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/weichsel/ZIPFoundation.git",
       "state" : {
