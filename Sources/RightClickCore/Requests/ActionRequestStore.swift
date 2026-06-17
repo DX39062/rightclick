@@ -50,7 +50,10 @@ public struct ActionRequestStore {
 private extension JSONEncoder {
     static var rightClick: JSONEncoder {
         let encoder = JSONEncoder()
-        encoder.dateEncodingStrategy = .iso8601
+        encoder.dateEncodingStrategy = .custom { date, encoder in
+            var container = encoder.singleValueContainer()
+            try container.encode(ISO8601DateFormatter.rightClick.string(from: date))
+        }
         return encoder
     }
 }
@@ -58,7 +61,22 @@ private extension JSONEncoder {
 private extension JSONDecoder {
     static var rightClick: JSONDecoder {
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .iso8601
+        decoder.dateDecodingStrategy = .custom { decoder in
+            let container = try decoder.singleValueContainer()
+            let value = try container.decode(String.self)
+            guard let date = ISO8601DateFormatter.rightClick.date(from: value) else {
+                throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid ISO-8601 date: \(value)")
+            }
+            return date
+        }
         return decoder
     }
+}
+
+private extension ISO8601DateFormatter {
+    static let rightClick: ISO8601DateFormatter = {
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return formatter
+    }()
 }

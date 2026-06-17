@@ -18,7 +18,7 @@ final class ActionRequestStoreTests: XCTestCase {
         let store = ActionRequestStore(containerDirectory: directory)
         let request = FinderActionRequest(
             id: UUID(uuidString: "00000000-0000-0000-0000-000000000001")!,
-            createdAt: Date(timeIntervalSince1970: 10),
+            createdAt: Date(timeIntervalSince1970: 10.123),
             context: FinderContext(
                 currentDirectory: URL(fileURLWithPath: "/tmp", isDirectory: true),
                 selectedItems: []
