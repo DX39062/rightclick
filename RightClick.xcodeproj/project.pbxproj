@@ -13,7 +13,34 @@
 		A10000010000000000000004 /* NewFileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000004 /* NewFileViewModel.swift */; };
 		A10000010000000000000006 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000007 /* AppGroup.swift */; };
 		A10000010000000000000005 /* RightClickCore in Frameworks */ = {isa = PBXBuildFile; productRef = A70000010000000000000001 /* RightClickCore */; };
+		B10000010000000000000001 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000001 /* FinderSync.swift */; };
+		B10000010000000000000002 /* RightClickCore in Frameworks */ = {isa = PBXBuildFile; productRef = B70000010000000000000001 /* RightClickCore */; };
+		B10000010000000000000003 /* RightClickFinderExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B20000010000000000000003 /* RightClickFinderExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B90000010000000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A60000010000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B50000010000000000000001;
+			remoteInfo = RightClickFinderExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B30000010000000000000003 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B10000010000000000000003 /* RightClickFinderExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A20000010000000000000001 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -23,6 +50,11 @@
 		A20000010000000000000005 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A20000010000000000000006 /* RightClick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RightClick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A20000010000000000000007 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
+		B20000010000000000000001 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
+		B20000010000000000000002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B20000010000000000000003 /* RightClickFinderExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RightClickFinderExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B20000010000000000000004 /* RightClick.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RightClick.entitlements; sourceTree = "<group>"; };
+		B20000010000000000000005 /* RightClickFinderExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RightClickFinderExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -34,6 +66,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B30000010000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000010000000000000002 /* RightClickCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -41,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				A40000010000000000000002 /* RightClick */,
+				B40000010000000000000001 /* RightClickFinderExtension */,
 				A40000010000000000000004 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -51,6 +92,7 @@
 				A20000010000000000000001 /* AppDelegate.swift */,
 				A20000010000000000000002 /* RightClickApp.swift */,
 				A20000010000000000000005 /* Info.plist */,
+				B20000010000000000000004 /* RightClick.entitlements */,
 				A40000010000000000000003 /* NewFile */,
 				A40000010000000000000005 /* Shared */,
 			);
@@ -78,8 +120,19 @@
 			isa = PBXGroup;
 			children = (
 				A20000010000000000000006 /* RightClick.app */,
+				B20000010000000000000003 /* RightClickFinderExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B40000010000000000000001 /* RightClickFinderExtension */ = {
+			isa = PBXGroup;
+			children = (
+				B20000010000000000000001 /* FinderSync.swift */,
+				B20000010000000000000002 /* Info.plist */,
+				B20000010000000000000005 /* RightClickFinderExtension.entitlements */,
+			);
+			path = RightClickFinderExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -91,10 +144,12 @@
 			buildPhases = (
 				A30000010000000000000002 /* Sources */,
 				A30000010000000000000001 /* Frameworks */,
+				B30000010000000000000003 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				B90000010000000000000001 /* PBXTargetDependency */,
 			);
 			name = RightClick;
 			packageProductDependencies = (
@@ -103,6 +158,25 @@
 			productName = RightClick;
 			productReference = A20000010000000000000006 /* RightClick.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B50000010000000000000001 /* RightClickFinderExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B80000010000000000000001 /* Build configuration list for PBXNativeTarget "RightClickFinderExtension" */;
+			buildPhases = (
+				B30000010000000000000001 /* Sources */,
+				B30000010000000000000002 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RightClickFinderExtension;
+			packageProductDependencies = (
+				B70000010000000000000001 /* RightClickCore */,
+			);
+			productName = RightClickFinderExtension;
+			productReference = B20000010000000000000003 /* RightClickFinderExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -114,6 +188,9 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					A50000010000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					B50000010000000000000001 = {
 						CreatedOnToolsVersion = 16.0;
 					};
 				};
@@ -135,6 +212,7 @@
 			projectRoot = "";
 			targets = (
 				A50000010000000000000001 /* RightClick */,
+				B50000010000000000000001 /* RightClickFinderExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -152,7 +230,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B30000010000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000010000000000000001 /* FinderSync.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B90000010000000000000001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B50000010000000000000001 /* RightClickFinderExtension */;
+			targetProxy = B90000010000000000000002 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A80000010000000000000002 /* Debug */ = {
@@ -181,6 +275,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = RightClick/RightClick.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = RightClick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -200,6 +295,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				CODE_SIGN_ENTITLEMENTS = RightClick/RightClick.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = RightClick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -210,6 +306,50 @@
 				PRODUCT_BUNDLE_IDENTIFIER = local.rightclick.RightClick;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		B80000010000000000000002 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RightClickFinderExtension/RightClickFinderExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RightClickFinderExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = local.rightclick.RightClick.FinderExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		B80000010000000000000003 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RightClickFinderExtension/RightClickFinderExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RightClickFinderExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				PRODUCT_BUNDLE_IDENTIFIER = local.rightclick.RightClick.FinderExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.9;
 			};
@@ -236,6 +376,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		B80000010000000000000001 /* Build configuration list for PBXNativeTarget "RightClickFinderExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B80000010000000000000002 /* Debug */,
+				B80000010000000000000003 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
@@ -247,6 +396,11 @@
 
 /* Begin XCSwiftPackageProductDependency section */
 		A70000010000000000000001 /* RightClickCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A70000010000000000000002 /* XCLocalSwiftPackageReference "." */;
+			productName = RightClickCore;
+		};
+		B70000010000000000000001 /* RightClickCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A70000010000000000000002 /* XCLocalSwiftPackageReference "." */;
 			productName = RightClickCore;
