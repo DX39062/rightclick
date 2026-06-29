@@ -11,7 +11,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func latestTargetDirectory() -> URL {
-        let store = ActionRequestStore(containerDirectory: AppGroup.containerURL)
+        let store = ActionRequestStore()
         do {
             let request = try store.readLatest()
             return try TargetDirectoryResolver.resolve(request.context)

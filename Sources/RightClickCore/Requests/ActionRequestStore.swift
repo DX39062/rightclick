@@ -14,9 +14,20 @@ public struct FinderActionRequest: Codable, Equatable {
 
 public struct ActionRequestStore {
     public static let defaultFileName = "latest-finder-action-request.json"
+    public static let defaultDirectoryName = "RightClick"
+
+    public static var defaultContainerDirectory: URL {
+        let baseURL = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first
+            ?? FileManager.default.homeDirectoryForCurrentUser.appendingPathComponent("Library/Application Support", isDirectory: true)
+        return baseURL.appendingPathComponent(defaultDirectoryName, isDirectory: true)
+    }
 
     private let containerDirectory: URL
     private let fileManager: FileManager
+
+    public init(fileManager: FileManager = .default) {
+        self.init(containerDirectory: Self.defaultContainerDirectory, fileManager: fileManager)
+    }
 
     public init(containerDirectory: URL, fileManager: FileManager = .default) {
         self.containerDirectory = containerDirectory

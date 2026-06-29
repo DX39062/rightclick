@@ -38,6 +38,13 @@ final class ActionRequestStoreTests: XCTestCase {
         }
     }
 
+    func testDefaultContainerDirectoryUsesApplicationSupport() {
+        let directory = ActionRequestStore.defaultContainerDirectory
+
+        XCTAssertEqual(directory.lastPathComponent, ActionRequestStore.defaultDirectoryName)
+        XCTAssertTrue(directory.deletingLastPathComponent().path.hasSuffix("Application Support"))
+    }
+
     func testReadsLegacyRequestWithoutFractionalSeconds() throws {
         let store = ActionRequestStore(containerDirectory: directory)
         let json = """

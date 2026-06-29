@@ -19,7 +19,7 @@ RightClick is a personal macOS Finder extension for adding modular right-click a
 
 Open `RightClick.xcodeproj` in Xcode and build the `RightClick` scheme.
 
-If Xcode asks for signing settings, use your local Personal Team or local development signing. The project is intended for source distribution, not notarized binary distribution.
+The project uses Xcode's local signing for Debug builds, so a paid Apple Developer account is not required. It is intended for source distribution, not notarized binary distribution.
 
 ## Enable Finder Extension
 

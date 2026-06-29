@@ -28,7 +28,7 @@ final class FinderSync: FIFinderSync {
         let request = FinderActionRequest(context: context)
 
         do {
-            let store = ActionRequestStore(containerDirectory: appGroupContainerURL())
+            let store = ActionRequestStore()
             try store.write(request)
             openMainApp()
         } catch {
@@ -40,11 +40,6 @@ final class FinderSync: FIFinderSync {
         var isDirectory: ObjCBool = false
         FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory)
         return isDirectory.boolValue
-    }
-
-    private func appGroupContainerURL() -> URL {
-        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: "group.local.rightclick")
-            ?? FileManager.default.temporaryDirectory.appendingPathComponent("RightClick", isDirectory: true)
     }
 
     private func openMainApp() {

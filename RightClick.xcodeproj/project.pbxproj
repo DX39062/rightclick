@@ -11,7 +11,6 @@
 		A10000010000000000000002 /* RightClickApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000002 /* RightClickApp.swift */; };
 		A10000010000000000000003 /* NewFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000003 /* NewFileView.swift */; };
 		A10000010000000000000004 /* NewFileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000004 /* NewFileViewModel.swift */; };
-		A10000010000000000000006 /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000007 /* AppGroup.swift */; };
 		A10000010000000000000005 /* RightClickCore in Frameworks */ = {isa = PBXBuildFile; productRef = A70000010000000000000001 /* RightClickCore */; };
 		B10000010000000000000001 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000001 /* FinderSync.swift */; };
 		B10000010000000000000002 /* RightClickCore in Frameworks */ = {isa = PBXBuildFile; productRef = B70000010000000000000001 /* RightClickCore */; };
@@ -49,12 +48,9 @@
 		A20000010000000000000004 /* NewFileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFileViewModel.swift; sourceTree = "<group>"; };
 		A20000010000000000000005 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A20000010000000000000006 /* RightClick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RightClick.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A20000010000000000000007 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
 		B20000010000000000000001 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		B20000010000000000000002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B20000010000000000000003 /* RightClickFinderExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RightClickFinderExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		B20000010000000000000004 /* RightClick.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RightClick.entitlements; sourceTree = "<group>"; };
-		B20000010000000000000005 /* RightClickFinderExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RightClickFinderExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,9 +88,7 @@
 				A20000010000000000000001 /* AppDelegate.swift */,
 				A20000010000000000000002 /* RightClickApp.swift */,
 				A20000010000000000000005 /* Info.plist */,
-				B20000010000000000000004 /* RightClick.entitlements */,
 				A40000010000000000000003 /* NewFile */,
-				A40000010000000000000005 /* Shared */,
 			);
 			path = RightClick;
 			sourceTree = "<group>";
@@ -106,14 +100,6 @@
 				A20000010000000000000004 /* NewFileViewModel.swift */,
 			);
 			path = NewFile;
-			sourceTree = "<group>";
-		};
-		A40000010000000000000005 /* Shared */ = {
-			isa = PBXGroup;
-			children = (
-				A20000010000000000000007 /* AppGroup.swift */,
-			);
-			path = Shared;
 			sourceTree = "<group>";
 		};
 		A40000010000000000000004 /* Products */ = {
@@ -130,7 +116,6 @@
 			children = (
 				B20000010000000000000001 /* FinderSync.swift */,
 				B20000010000000000000002 /* Info.plist */,
-				B20000010000000000000005 /* RightClickFinderExtension.entitlements */,
 			);
 			path = RightClickFinderExtension;
 			sourceTree = "<group>";
@@ -226,7 +211,6 @@
 				A10000010000000000000002 /* RightClickApp.swift in Sources */,
 				A10000010000000000000003 /* NewFileView.swift in Sources */,
 				A10000010000000000000004 /* NewFileViewModel.swift in Sources */,
-				A10000010000000000000006 /* AppGroup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,8 +258,6 @@
 		A80000010000000000000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CODE_SIGN_ENTITLEMENTS = RightClick/RightClick.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = RightClick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -283,6 +265,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = local.rightclick.RightClick;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -294,8 +277,6 @@
 		A80000010000000000000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CODE_SIGN_ENTITLEMENTS = RightClick/RightClick.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = RightClick/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -314,8 +295,6 @@
 		B80000010000000000000002 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = RightClickFinderExtension/RightClickFinderExtension.entitlements;
-				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = RightClickFinderExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -324,6 +303,7 @@
 					"@executable_path/../../../../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = local.rightclick.RightClick.FinderExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -336,8 +316,6 @@
 		B80000010000000000000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = RightClickFinderExtension/RightClickFinderExtension.entitlements;
-				CODE_SIGN_STYLE = Automatic;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = RightClickFinderExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

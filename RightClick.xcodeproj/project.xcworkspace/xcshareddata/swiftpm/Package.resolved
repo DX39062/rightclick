@@ -1,4 +1,5 @@
 {
+  "originHash" : "617e34ceaca51af351e57550ccef9d945be1d17b8dd0189d4f77b546f60fb603",
   "pins" : [
     {
       "identity" : "zipfoundation",
@@ -10,5 +11,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }
