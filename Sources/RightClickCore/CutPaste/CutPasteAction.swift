@@ -11,6 +11,11 @@ public struct CutPasteResult: Equatable {
 public struct CutPasteAction {
     private let fileManager: FileManager
 
+    private struct MovePlan {
+        let source: URL
+        let destination: URL
+    }
+
     public init(fileManager: FileManager = .default) {
         self.fileManager = fileManager
     }
@@ -25,24 +30,51 @@ public struct CutPasteAction {
             throw ActionError.noSelectedItems
         }
 
-        for sourceURL in state.itemURLs {
+        let plan = try makeMovePlan(for: state.itemURLs, into: targetDirectory)
+
+        for move in plan where move.source.standardizedFileURL != move.destination.standardizedFileURL {
+            do {
+                try fileManager.moveItem(at: move.source, to: move.destination)
+            } catch {
+                throw ActionError.writeFailed(error.localizedDescription)
+            }
+        }
+
+        return CutPasteResult(movedURLs: plan.map(\.destination))
+    }
+
+    private func makeMovePlan(for sourceURLs: [URL], into targetDirectory: URL) throws -> [MovePlan] {
+        for sourceURL in sourceURLs {
             guard fileManager.fileExists(atPath: sourceURL.path) else {
                 throw ActionError.sourceItemUnavailable(sourceURL.path)
             }
         }
 
-        var movedURLs: [URL] = []
-        for sourceURL in state.itemURLs {
-            let destination = try availableDestination(for: sourceURL, in: targetDirectory)
-            do {
-                try fileManager.moveItem(at: sourceURL, to: destination)
-            } catch {
-                throw ActionError.writeFailed(error.localizedDescription)
-            }
-            movedURLs.append(destination)
+        guard !hasNestedSelection(sourceURLs) else {
+            throw ActionError.writeFailed("Cannot paste nested cut selections.")
         }
 
-        return CutPasteResult(movedURLs: movedURLs)
+        let target = targetDirectory.standardizedFileURL
+        let plan = try sourceURLs.map { sourceURL in
+            let source = sourceURL.standardizedFileURL
+            let destination: URL
+            if source.deletingLastPathComponent().standardizedFileURL == target {
+                destination = sourceURL
+            } else {
+                destination = try availableDestination(for: sourceURL, in: targetDirectory)
+            }
+            return MovePlan(source: sourceURL, destination: destination)
+        }
+
+        var plannedDestinations = Set<String>()
+        for move in plan {
+            let destinationPath = move.destination.standardizedFileURL.path
+            guard plannedDestinations.insert(destinationPath).inserted else {
+                throw ActionError.collisionResolutionFailed
+            }
+        }
+
+        return plan
     }
 
     private func availableDestination(for sourceURL: URL, in targetDirectory: URL) throws -> URL {
@@ -68,5 +100,18 @@ public struct CutPasteAction {
         }
 
         throw ActionError.collisionResolutionFailed
+    }
+
+    private func hasNestedSelection(_ sourceURLs: [URL]) -> Bool {
+        let componentPaths = sourceURLs.map { $0.standardizedFileURL.pathComponents }
+        for sourceIndex in componentPaths.indices {
+            for possibleParentIndex in componentPaths.indices where sourceIndex != possibleParentIndex {
+                if componentPaths[sourceIndex].starts(with: componentPaths[possibleParentIndex]),
+                   componentPaths[sourceIndex].count > componentPaths[possibleParentIndex].count {
+                    return true
+                }
+            }
+        }
+        return false
     }
 }
