@@ -53,6 +53,25 @@ final class CutPasteActionTests: XCTestCase {
         XCTAssertEqual(result.movedURLs, [destination.appendingPathComponent("note 2.txt")])
     }
 
+    func testUsesNumberedNamesForSameNamedItemsFromDifferentFolders() throws {
+        let otherSource = root.appendingPathComponent("otherSource", isDirectory: true)
+        try FileManager.default.createDirectory(at: otherSource, withIntermediateDirectories: true)
+        let firstFile = source.appendingPathComponent("note.txt")
+        let secondFile = otherSource.appendingPathComponent("note.txt")
+        try Data("first".utf8).write(to: firstFile)
+        try Data("second".utf8).write(to: secondFile)
+
+        let result = try CutPasteAction().paste(CutState(itemURLs: [firstFile, secondFile]), into: destination)
+
+        let firstDestination = destination.appendingPathComponent("note.txt")
+        let secondDestination = destination.appendingPathComponent("note 2.txt")
+        XCTAssertFalse(FileManager.default.fileExists(atPath: firstFile.path))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: secondFile.path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: firstDestination.path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: secondDestination.path))
+        XCTAssertEqual(result.movedURLs, [firstDestination, secondDestination])
+    }
+
     func testPastingFileIntoCurrentParentIsNoOp() throws {
         let file = source.appendingPathComponent("note.txt")
         try Data("hello".utf8).write(to: file)

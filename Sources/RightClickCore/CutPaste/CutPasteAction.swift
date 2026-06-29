@@ -59,29 +59,37 @@ public struct CutPasteAction {
         }
 
         let target = targetDirectory.standardizedFileURL
-        let plan = try sourceURLs.map { sourceURL in
+        var plan: [MovePlan] = []
+        var reservedDestinations = Set<String>()
+        for sourceURL in sourceURLs {
             let source = sourceURL.standardizedFileURL
             let destination: URL
             if source.deletingLastPathComponent().standardizedFileURL == target {
                 destination = sourceURL
             } else {
-                destination = try availableDestination(for: sourceURL, in: targetDirectory)
+                destination = try availableDestination(
+                    for: sourceURL,
+                    in: targetDirectory,
+                    reservedDestinations: reservedDestinations
+                )
             }
-            return MovePlan(source: sourceURL, destination: destination)
-        }
 
-        var plannedDestinations = Set<String>()
-        for move in plan {
-            let destinationPath = move.destination.standardizedFileURL.path
-            guard plannedDestinations.insert(destinationPath).inserted else {
+            let destinationPath = destination.standardizedFileURL.path
+            guard reservedDestinations.insert(destinationPath).inserted else {
                 throw ActionError.collisionResolutionFailed
             }
+
+            plan.append(MovePlan(source: sourceURL, destination: destination))
         }
 
         return plan
     }
 
-    private func availableDestination(for sourceURL: URL, in targetDirectory: URL) throws -> URL {
+    private func availableDestination(
+        for sourceURL: URL,
+        in targetDirectory: URL,
+        reservedDestinations: Set<String>
+    ) throws -> URL {
         let lastPathComponent = sourceURL.lastPathComponent.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !lastPathComponent.isEmpty, lastPathComponent == (lastPathComponent as NSString).lastPathComponent else {
             throw ActionError.invalidFileName
@@ -98,7 +106,8 @@ public struct CutPasteAction {
                 ? "\(baseName)\(suffix)"
                 : "\(baseName)\(suffix).\(pathExtension)"
             let candidate = targetDirectory.appendingPathComponent(candidateName, isDirectory: sourceURL.hasDirectoryPath)
-            if !fileManager.fileExists(atPath: candidate.path) {
+            if !fileManager.fileExists(atPath: candidate.path),
+               !reservedDestinations.contains(candidate.standardizedFileURL.path) {
                 return candidate
             }
         }
