@@ -5,7 +5,7 @@ import RightClickCore
 final class FinderSync: FIFinderSync {
     override init() {
         super.init()
-        FIFinderSyncController.default().directoryURLs = [FileManager.default.homeDirectoryForCurrentUser]
+        FIFinderSyncController.default().directoryURLs = [URL(fileURLWithPath: "/", isDirectory: true)]
     }
 
     override func menu(for menuKind: FIMenuKind) -> NSMenu? {
