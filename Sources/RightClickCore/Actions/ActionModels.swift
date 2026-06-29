@@ -3,6 +3,9 @@ import Foundation
 public enum ActionError: Error, Equatable, LocalizedError {
     case missingTargetDirectory
     case targetDirectoryUnavailable(String)
+    case noSelectedItems
+    case sourceItemUnavailable(String)
+    case pasteTargetUnavailable(String)
     case unsupportedFormat(String)
     case invalidFileName
     case collisionResolutionFailed
@@ -15,6 +18,12 @@ public enum ActionError: Error, Equatable, LocalizedError {
             return "No target directory was provided."
         case .targetDirectoryUnavailable(let path):
             return "The target directory is unavailable: \(path)"
+        case .noSelectedItems:
+            return "No Finder items were selected."
+        case .sourceItemUnavailable(let path):
+            return "The source item is unavailable: \(path)"
+        case .pasteTargetUnavailable(let path):
+            return "The paste target is unavailable: \(path)"
         case .unsupportedFormat(let value):
             return "Unsupported file format: \(value)"
         case .invalidFileName:
