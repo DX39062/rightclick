@@ -102,4 +102,20 @@ final class CutPasteActionTests: XCTestCase {
         XCTAssertTrue(FileManager.default.fileExists(atPath: folder.path))
         XCTAssertTrue(FileManager.default.fileExists(atPath: child.path))
     }
+
+    func testTargetInsideSelectedFolderThrowsBeforeMovingAnything() throws {
+        let folder = source.appendingPathComponent("Parent", isDirectory: true)
+        let childTarget = folder.appendingPathComponent("childTarget", isDirectory: true)
+        let sibling = source.appendingPathComponent("sibling.txt")
+        try FileManager.default.createDirectory(at: childTarget, withIntermediateDirectories: true)
+        try Data("sibling".utf8).write(to: sibling)
+
+        XCTAssertThrowsError(try CutPasteAction().paste(CutState(itemURLs: [sibling, folder]), into: childTarget)) { error in
+            XCTAssertEqual(error as? ActionError, .writeFailed("Cannot paste a folder into itself."))
+        }
+        XCTAssertTrue(FileManager.default.fileExists(atPath: sibling.path))
+        XCTAssertFalse(FileManager.default.fileExists(atPath: childTarget.appendingPathComponent("sibling.txt").path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: folder.path))
+        XCTAssertTrue(FileManager.default.fileExists(atPath: childTarget.path))
+    }
 }

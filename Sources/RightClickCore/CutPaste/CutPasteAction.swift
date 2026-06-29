@@ -54,6 +54,10 @@ public struct CutPasteAction {
             throw ActionError.writeFailed("Cannot paste nested cut selections.")
         }
 
+        guard !targetDirectoryIsInsideSelectedFolder(sourceURLs, targetDirectory: targetDirectory) else {
+            throw ActionError.writeFailed("Cannot paste a folder into itself.")
+        }
+
         let target = targetDirectory.standardizedFileURL
         let plan = try sourceURLs.map { sourceURL in
             let source = sourceURL.standardizedFileURL
@@ -112,6 +116,30 @@ public struct CutPasteAction {
                 }
             }
         }
+        return false
+    }
+
+    private func targetDirectoryIsInsideSelectedFolder(_ sourceURLs: [URL], targetDirectory: URL) -> Bool {
+        let target = targetDirectory.standardizedFileURL
+        let targetComponents = target.pathComponents
+
+        for sourceURL in sourceURLs {
+            var isDirectory: ObjCBool = false
+            guard fileManager.fileExists(atPath: sourceURL.path, isDirectory: &isDirectory), isDirectory.boolValue else {
+                continue
+            }
+
+            let source = sourceURL.standardizedFileURL
+            if source.deletingLastPathComponent().standardizedFileURL == target {
+                continue
+            }
+
+            let sourceComponents = source.pathComponents
+            if targetComponents.starts(with: sourceComponents), targetComponents.count >= sourceComponents.count {
+                return true
+            }
+        }
+
         return false
     }
 }
