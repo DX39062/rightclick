@@ -13,6 +13,7 @@
 		A10000010000000000000004 /* NewFileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000004 /* NewFileViewModel.swift */; };
 		A10000010000000000000005 /* RightClickCore in Frameworks */ = {isa = PBXBuildFile; productRef = A70000010000000000000001 /* RightClickCore */; };
 		A10000010000000000000006 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000007 /* ErrorView.swift */; };
+		A10000010000000000000007 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000010000000000000008 /* SettingsView.swift */; };
 		B10000010000000000000001 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000010000000000000001 /* FinderSync.swift */; };
 		B10000010000000000000002 /* RightClickCore in Frameworks */ = {isa = PBXBuildFile; productRef = B70000010000000000000001 /* RightClickCore */; };
 		B10000010000000000000003 /* RightClickFinderExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = B20000010000000000000003 /* RightClickFinderExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -50,6 +51,7 @@
 		A20000010000000000000005 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A20000010000000000000006 /* RightClick.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RightClick.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A20000010000000000000007 /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		A20000010000000000000008 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B20000010000000000000001 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		B20000010000000000000002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B20000010000000000000003 /* RightClickFinderExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RightClickFinderExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,6 +94,7 @@
 				A20000010000000000000002 /* RightClickApp.swift */,
 				A20000010000000000000005 /* Info.plist */,
 				A40000010000000000000003 /* NewFile */,
+				A40000010000000000000006 /* Settings */,
 				A40000010000000000000005 /* Error */,
 			);
 			path = RightClick;
@@ -112,6 +115,14 @@
 				A20000010000000000000007 /* ErrorView.swift */,
 			);
 			path = Error;
+			sourceTree = "<group>";
+		};
+		A40000010000000000000006 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A20000010000000000000008 /* SettingsView.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		A40000010000000000000004 /* Products */ = {
@@ -225,6 +236,7 @@
 				A10000010000000000000003 /* NewFileView.swift in Sources */,
 				A10000010000000000000004 /* NewFileViewModel.swift in Sources */,
 				A10000010000000000000006 /* ErrorView.swift in Sources */,
+				A10000010000000000000007 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
