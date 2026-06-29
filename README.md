@@ -12,34 +12,58 @@ RightClick is a personal macOS Finder extension for adding modular right-click a
 ## Requirements
 
 - macOS 13 Ventura or newer
-- Xcode
+- Xcode from the Mac App Store
+- Git
 - No paid Apple Developer account required for local source builds
 
-## Build
+## Build From Source
 
-Open `RightClick.xcodeproj` in Xcode and build the `RightClick` scheme.
-
-The project uses Xcode's local signing for Debug builds, so a paid Apple Developer account is not required. It is intended for source distribution, not notarized binary distribution.
-
-## Enable Finder Extension
-
-After building the app, copy it to `/Applications`:
+Clone the repository and enter the project directory:
 
 ```bash
-ditto ~/Library/Developer/Xcode/DerivedData/RightClick-*/Build/Products/Debug/RightClick.app /Applications/RightClick.app
+git clone <repository-url>
+cd rightclick
 ```
 
-Then enable the extension:
+If this is the first time you have installed Xcode, open Xcode once and accept the license. You can also verify the command line tools:
+
+```bash
+xcodebuild -version
+```
+
+Build the app and Finder extension:
+
+```bash
+xcodebuild -project RightClick.xcodeproj -scheme RightClick -configuration Debug -destination 'platform=macOS' -derivedDataPath .build/Xcode build
+```
+
+Install the locally built app:
+
+```bash
+ditto .build/Xcode/Build/Products/Debug/RightClick.app /Applications/RightClick.app
+```
+
+The project uses Xcode's local signing for Debug builds, so a paid Apple Developer account is not required. The app is intended for local source builds, not notarized binary distribution.
+
+## Enable Finder Extension
 
 1. Open System Settings.
 2. Go to General > Login Items & Extensions.
 3. Open Finder Extensions.
-4. Enable RightClick.
+4. Enable RightClick or RightClick Finder Extension.
 5. Relaunch Finder if the menu item does not appear immediately:
 
 ```bash
 killall Finder
 ```
+
+You can verify that macOS registered the extension:
+
+```bash
+pluginkit -m -p com.apple.FinderSync | grep RightClick
+```
+
+A leading `+` means the extension is enabled.
 
 ## Usage
 
@@ -53,6 +77,33 @@ The target location is resolved as follows:
 - Multiple selected items: beside the first selected item, unless exactly one folder is selected
 
 If a file already exists, RightClick appends a number, such as `Untitled 2.txt`.
+
+## Updating
+
+After pulling new source changes, rebuild and reinstall:
+
+```bash
+git pull
+xcodebuild -project RightClick.xcodeproj -scheme RightClick -configuration Debug -destination 'platform=macOS' -derivedDataPath .build/Xcode build
+ditto .build/Xcode/Build/Products/Debug/RightClick.app /Applications/RightClick.app
+pluginkit -e use -i local.rightclick.RightClick.FinderExtension
+killall Finder
+```
+
+## Troubleshooting
+
+If `New File...` does not appear in Finder:
+
+1. Confirm `/Applications/RightClick.app` exists.
+2. Confirm the Finder extension is enabled in System Settings.
+3. Re-enable it from Terminal:
+
+```bash
+pluginkit -e use -i local.rightclick.RightClick.FinderExtension
+killall Finder
+```
+
+If you built and ran from Xcode, install the app to `/Applications` again. Finder extensions are more reliable when registered from the installed app bundle instead of Xcode's temporary build directory.
 
 ## Development
 
