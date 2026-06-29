@@ -2,12 +2,13 @@ import AppKit
 import SwiftUI
 import RightClickCore
 
-final class AppDelegate: NSObject, NSApplicationDelegate {
+@MainActor
+final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private var requestedTargetDirectory: URL?
+    private var newFileWindow: NSWindow?
     private var errorWindow: NSWindow?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApp.activate(ignoringOtherApps: true)
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -19,10 +20,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     func application(_ application: NSApplication, open urls: [URL]) {
-        guard let url = urls.first,
-              url.scheme == "rightclick",
-              let route = url.host,
-              let request = decodeRequest(from: url) else {
+        guard let url = urls.first, url.scheme == "rightclick" else {
+            return
+        }
+
+        guard let route = url.host else {
+            showError(ActionError.malformedRequest)
+            return
+        }
+
+        let request: FinderActionRequest
+        do {
+            request = try decodeRequest(from: url)
+        } catch {
+            showError(ActionError.malformedRequest)
             return
         }
 
@@ -38,28 +49,60 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
 
-    private func decodeRequest(from url: URL) -> FinderActionRequest? {
+    private func decodeRequest(from url: URL) throws -> FinderActionRequest {
         guard let requestValue = URLComponents(url: url, resolvingAgainstBaseURL: false)?
             .queryItems?
             .first(where: { $0.name == "request" })?
             .value else {
-            return nil
+            throw ActionError.malformedRequest
         }
-        return try? ActionRequestPayloadCodec.decode(requestValue)
+
+        do {
+            return try ActionRequestPayloadCodec.decode(requestValue)
+        } catch {
+            throw ActionError.malformedRequest
+        }
     }
 
     private func handleNewFile(_ request: FinderActionRequest) {
         do {
             let directory = try TargetDirectoryResolver.resolve(request.context)
             requestedTargetDirectory = directory
-            NotificationCenter.default.post(
-                name: .rightClickTargetDirectoryDidChange,
-                object: self,
-                userInfo: ["targetDirectory": directory]
-            )
+            showNewFileWindow(targetDirectory: directory)
         } catch {
             showError(error)
         }
+    }
+
+    private func showNewFileWindow(targetDirectory: URL) {
+        if let window = newFileWindow {
+            NotificationCenter.default.post(
+                name: .rightClickTargetDirectoryDidChange,
+                object: self,
+                userInfo: ["targetDirectory": targetDirectory]
+            )
+            window.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+            return
+        }
+
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 360, height: 240),
+            styleMask: [.titled, .closable],
+            backing: .buffered,
+            defer: false
+        )
+        window.title = "New File"
+        window.delegate = self
+        window.contentView = NSHostingView(
+            rootView: NewFileView(
+                viewModel: NewFileViewModel(targetDirectory: targetDirectory)
+            )
+        )
+        window.center()
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+        newFileWindow = window
     }
 
     private func handleCut(_ request: FinderActionRequest) {
@@ -101,11 +144,24 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             defer: false
         )
         window.title = "RightClick"
+        window.delegate = self
         window.contentView = NSHostingView(rootView: ErrorView(message: message))
         window.center()
         window.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
         errorWindow = window
+    }
+
+    func windowWillClose(_ notification: Notification) {
+        guard let window = notification.object as? NSWindow else {
+            return
+        }
+
+        if window === newFileWindow {
+            newFileWindow = nil
+        } else if window === errorWindow {
+            errorWindow = nil
+        }
     }
 }
 
