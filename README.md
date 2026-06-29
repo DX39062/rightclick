@@ -1,13 +1,18 @@
 # RightClick
 
-RightClick is a personal macOS Finder extension for adding modular right-click actions. Version one adds `New File...` to Finder and creates blank files in these formats:
+RightClick is a personal macOS Finder extension for adding modular right-click actions.
 
-- `txt`
-- `docx`
-- `xlsx`
-- `pptx`
-- `py`
-- `md`
+Modules:
+
+- New File shows `New File...` in Finder and creates blank files in these formats:
+
+  - `txt`
+  - `docx`
+  - `xlsx`
+  - `pptx`
+  - `py`
+  - `md`
+- Cut / Paste shows `Cut` and `Paste`, moves files and folders, and is disabled by default.
 
 ## Requirements
 
@@ -67,6 +72,16 @@ A leading `+` means the extension is enabled.
 
 ## Usage
 
+Open RightClick and choose RightClick > Settings to enable or disable modules. Settings are stored locally under `~/Library/Application Support/RightClick`.
+
+Settings usually apply on the next Finder right-click. If an old menu remains visible, use Restart Finder in settings or run:
+
+```bash
+killall Finder
+```
+
+### New File
+
 In Finder, right-click a blank area, file, or folder and choose `New File...`.
 
 The target location is resolved as follows:
@@ -77,6 +92,20 @@ The target location is resolved as follows:
 - Multiple selected items: beside the first selected item, unless exactly one folder is selected
 
 If a file already exists, RightClick appends a number, such as `Untitled 2.txt`.
+
+### Cut / Paste
+
+1. Enable Cut / Paste in settings.
+2. Select one or more files/folders.
+3. Right-click and choose Cut.
+4. Right-click the destination folder or a blank area inside the destination folder.
+5. Choose Paste.
+
+RightClick avoids overwriting existing target names by appending numbers.
+
+### Finder Locations
+
+RightClick watches local disk locations, the home folder, Desktop, iCloud Drive paths, and mounted volumes under `/Volumes`. macOS Finder Sync behavior may still vary for cloud, network, shared, or protected locations.
 
 ## Updating
 
@@ -92,11 +121,12 @@ killall Finder
 
 ## Troubleshooting
 
-If `New File...` does not appear in Finder:
+If `New File...`, `Cut`, or `Paste` does not appear in Finder:
 
 1. Confirm `/Applications/RightClick.app` exists.
 2. Confirm the Finder extension is enabled in System Settings.
-3. Re-enable it from Terminal:
+3. Open RightClick and choose RightClick > Settings to confirm the module is enabled.
+4. Re-enable the Finder extension from Terminal:
 
 ```bash
 pluginkit -e use -i local.rightclick.RightClick.FinderExtension
