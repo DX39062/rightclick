@@ -45,6 +45,24 @@ final class ActionRequestStoreTests: XCTestCase {
         XCTAssertTrue(directory.deletingLastPathComponent().path.hasSuffix("Application Support"))
     }
 
+    func testPayloadCodecRoundTripsRequestForURLTransport() throws {
+        let request = FinderActionRequest(
+            id: UUID(uuidString: "00000000-0000-0000-0000-000000000002")!,
+            createdAt: Date(timeIntervalSince1970: 20.456),
+            context: FinderContext(
+                currentDirectory: URL(fileURLWithPath: "/tmp", isDirectory: true),
+                selectedItems: [
+                    FinderItem(url: URL(fileURLWithPath: "/tmp/example.txt"), isDirectory: false)
+                ]
+            )
+        )
+
+        let encoded = try ActionRequestPayloadCodec.encode(request)
+        XCTAssertFalse(encoded.contains("="))
+
+        XCTAssertEqual(try ActionRequestPayloadCodec.decode(encoded), request)
+    }
+
     func testReadsLegacyRequestWithoutFractionalSeconds() throws {
         let store = ActionRequestStore(containerDirectory: directory)
         let json = """

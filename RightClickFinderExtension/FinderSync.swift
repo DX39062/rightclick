@@ -27,13 +27,7 @@ final class FinderSync: FIFinderSync {
         let context = FinderContext(currentDirectory: currentDirectory, selectedItems: items)
         let request = FinderActionRequest(context: context)
 
-        do {
-            let store = ActionRequestStore()
-            try store.write(request)
-            openMainApp()
-        } catch {
-            NSLog("RightClick Finder request failed: \(error.localizedDescription)")
-        }
+        openMainApp(request: request)
     }
 
     private func isDirectory(_ url: URL) -> Bool {
@@ -42,17 +36,24 @@ final class FinderSync: FIFinderSync {
         return isDirectory.boolValue
     }
 
-    private func openMainApp() {
-        let bundleIdentifier = "local.rightclick.RightClick"
-        guard let appURL = NSWorkspace.shared.urlForApplication(withBundleIdentifier: bundleIdentifier) else {
-            NSLog("RightClick app not found for bundle identifier: \(bundleIdentifier)")
-            return
-        }
+    private func openMainApp(request: FinderActionRequest) {
+        do {
+            var components = URLComponents()
+            components.scheme = "rightclick"
+            components.host = "new-file"
+            components.queryItems = [
+                URLQueryItem(name: "request", value: try ActionRequestPayloadCodec.encode(request))
+            ]
 
-        NSWorkspace.shared.openApplication(at: appURL, configuration: NSWorkspace.OpenConfiguration()) { _, error in
-            if let error {
-                NSLog("RightClick app launch failed: \(error.localizedDescription)")
+            guard let url = components.url else {
+                NSLog("RightClick request URL could not be built")
+                return
             }
+
+            NSWorkspace.shared.open(url)
+        } catch {
+            NSLog("RightClick Finder request failed: \(error.localizedDescription)")
+            return
         }
     }
 }

@@ -51,6 +51,7 @@
 		B20000010000000000000001 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
 		B20000010000000000000002 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B20000010000000000000003 /* RightClickFinderExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = RightClickFinderExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B20000010000000000000005 /* RightClickFinderExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RightClickFinderExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +117,7 @@
 			children = (
 				B20000010000000000000001 /* FinderSync.swift */,
 				B20000010000000000000002 /* Info.plist */,
+				B20000010000000000000005 /* RightClickFinderExtension.entitlements */,
 			);
 			path = RightClickFinderExtension;
 			sourceTree = "<group>";
@@ -295,6 +297,7 @@
 		B80000010000000000000002 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RightClickFinderExtension/RightClickFinderExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = RightClickFinderExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -316,6 +319,7 @@
 		B80000010000000000000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = RightClickFinderExtension/RightClickFinderExtension.entitlements;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = RightClickFinderExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

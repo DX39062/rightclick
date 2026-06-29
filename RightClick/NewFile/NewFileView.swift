@@ -63,5 +63,11 @@ struct NewFileView: View {
         }
         .padding(20)
         .fixedSize()
+        .onReceive(NotificationCenter.default.publisher(for: .rightClickTargetDirectoryDidChange)) { notification in
+            guard let targetDirectory = notification.userInfo?["targetDirectory"] as? URL else {
+                return
+            }
+            viewModel.targetDirectory = targetDirectory
+        }
     }
 }

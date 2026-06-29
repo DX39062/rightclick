@@ -23,12 +23,19 @@ The project uses Xcode's local signing for Debug builds, so a paid Apple Develop
 
 ## Enable Finder Extension
 
-After building and running the app:
+After building the app, copy it to `/Applications`:
+
+```bash
+ditto ~/Library/Developer/Xcode/DerivedData/RightClick-*/Build/Products/Debug/RightClick.app /Applications/RightClick.app
+```
+
+Then enable the extension:
 
 1. Open System Settings.
-2. Go to Privacy & Security > Extensions > Finder Extensions.
-3. Enable RightClick.
-4. Relaunch Finder if the menu item does not appear immediately:
+2. Go to General > Login Items & Extensions.
+3. Open Finder Extensions.
+4. Enable RightClick.
+5. Relaunch Finder if the menu item does not appear immediately:
 
 ```bash
 killall Finder

@@ -58,6 +58,24 @@ public struct ActionRequestStore {
     }
 }
 
+public enum ActionRequestPayloadCodec {
+    public static func encode(_ request: FinderActionRequest) throws -> String {
+        let data = try JSONEncoder.rightClick.encode(request)
+        return data.rightClickBase64URLEncodedString()
+    }
+
+    public static func decode(_ value: String) throws -> FinderActionRequest {
+        guard let data = Data(rightClickBase64URLEncoded: value) else {
+            throw ActionError.malformedRequest
+        }
+        do {
+            return try JSONDecoder.rightClick.decode(FinderActionRequest.self, from: data)
+        } catch {
+            throw ActionError.malformedRequest
+        }
+    }
+}
+
 private extension JSONEncoder {
     static var rightClick: JSONEncoder {
         let encoder = JSONEncoder()
@@ -97,4 +115,26 @@ private extension ISO8601DateFormatter {
         formatter.formatOptions = [.withInternetDateTime]
         return formatter
     }()
+}
+
+private extension Data {
+    init?(rightClickBase64URLEncoded value: String) {
+        var base64 = value
+            .replacingOccurrences(of: "-", with: "+")
+            .replacingOccurrences(of: "_", with: "/")
+
+        let remainder = base64.count % 4
+        if remainder > 0 {
+            base64.append(String(repeating: "=", count: 4 - remainder))
+        }
+
+        self.init(base64Encoded: base64)
+    }
+
+    func rightClickBase64URLEncodedString() -> String {
+        base64EncodedString()
+            .replacingOccurrences(of: "+", with: "-")
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "=", with: "")
+    }
 }
