@@ -7,23 +7,23 @@ struct NewFileView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("New File")
+            Text("newFile.title")
                 .font(.headline)
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("File name")
+                Text("newFile.fileName")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                TextField("Untitled", text: $viewModel.baseName)
+                TextField(String(localized: "newFile.untitled"), text: $viewModel.baseName)
                     .textFieldStyle(.roundedBorder)
                     .frame(width: 320)
             }
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("Format")
+                Text("newFile.format")
                     .font(.caption)
                     .foregroundStyle(.secondary)
-                Picker("Format", selection: $viewModel.selectedFormat) {
+                Picker(String(localized: "newFile.format"), selection: $viewModel.selectedFormat) {
                     ForEach(FileFormat.builtIn) { format in
                         Text(format.rawValue).tag(format)
                     }
@@ -33,7 +33,7 @@ struct NewFileView: View {
             }
 
             VStack(alignment: .leading, spacing: 6) {
-                Text("Location")
+                Text("newFile.location")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 Text(viewModel.targetDirectory.path)
@@ -52,10 +52,10 @@ struct NewFileView: View {
 
             HStack {
                 Spacer()
-                Button("Cancel") {
+                Button("newFile.cancel") {
                     dismiss()
                 }
-                Button("Create") {
+                Button("newFile.create") {
                     viewModel.create()
                 }
                 .keyboardShortcut(.defaultAction)

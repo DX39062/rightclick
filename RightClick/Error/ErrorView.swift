@@ -12,7 +12,7 @@ struct ErrorView: View {
                 .frame(width: 360, alignment: .leading)
             HStack {
                 Spacer()
-                Button("OK") {
+                Button("error.ok") {
                     NSApp.keyWindow?.close()
                 }
                 .keyboardShortcut(.defaultAction)

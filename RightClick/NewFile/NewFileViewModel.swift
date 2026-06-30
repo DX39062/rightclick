@@ -13,7 +13,7 @@ final class NewFileViewModel: ObservableObject {
     private let action: NewFileAction
 
     init(
-        baseName: String = "Untitled",
+        baseName: String = String(localized: "newFile.untitled"),
         selectedFormat: FileFormat = .txt,
         targetDirectory: URL = FileManager.default.homeDirectoryForCurrentUser,
         action: NewFileAction = NewFileAction()
@@ -36,7 +36,7 @@ final class NewFileViewModel: ObservableObject {
             NSWorkspace.shared.activateFileViewerSelecting([result.createdURL])
             NSApp.keyWindow?.close()
         } catch {
-            errorMessage = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+            errorMessage = L10n.actionErrorMessage(error)
         }
     }
 }

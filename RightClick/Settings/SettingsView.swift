@@ -9,12 +9,12 @@ struct SettingsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Toggle("New File", isOn: binding(\.isNewFileEnabled))
-            Toggle("Cut / Paste", isOn: binding(\.isCutPasteEnabled))
+            Toggle("settings.newFile", isOn: binding(\.isNewFileEnabled))
+            Toggle("settings.cutPaste", isOn: binding(\.isCutPasteEnabled))
 
             Divider()
 
-            Button("Restart Finder") {
+            Button("settings.restartFinder") {
                 restartFinder()
             }
 
@@ -44,9 +44,9 @@ struct SettingsView: View {
     private func saveSettings() {
         do {
             try store.save(settings)
-            message = "Settings saved. They usually apply on the next right-click."
+            message = String(localized: "settings.saved")
         } catch {
-            message = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+            message = L10n.actionErrorMessage(error)
         }
     }
 
@@ -57,7 +57,7 @@ struct SettingsView: View {
 
         do {
             try process.run()
-            message = "Finder restarted."
+            message = String(localized: "settings.finderRestarted")
         } catch {
             message = error.localizedDescription
         }

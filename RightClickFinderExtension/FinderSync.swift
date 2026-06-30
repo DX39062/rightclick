@@ -19,20 +19,20 @@ final class FinderSync: FIFinderSync {
         let hasCutState = ((try? cutStateStore.load()) ?? nil) != nil
 
         if settings.isNewFileEnabled {
-            let item = NSMenuItem(title: "New File...", action: #selector(openNewFileWindow(_:)), keyEquivalent: "")
+            let item = NSMenuItem(title: String(localized: "menu.newFile"), action: #selector(openNewFileWindow(_:)), keyEquivalent: "")
             item.target = self
             menu.addItem(item)
         }
 
         if settings.isCutPasteEnabled {
             if !selectedURLs.isEmpty {
-                let item = NSMenuItem(title: "Cut", action: #selector(cutSelectedItems(_:)), keyEquivalent: "")
+                let item = NSMenuItem(title: String(localized: "menu.cut"), action: #selector(cutSelectedItems(_:)), keyEquivalent: "")
                 item.target = self
                 menu.addItem(item)
             }
 
             if hasCutState {
-                let item = NSMenuItem(title: "Paste", action: #selector(pasteCutItems(_:)), keyEquivalent: "")
+                let item = NSMenuItem(title: String(localized: "menu.paste"), action: #selector(pasteCutItems(_:)), keyEquivalent: "")
                 item.target = self
                 menu.addItem(item)
             }

@@ -93,7 +93,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             defer: false
         )
         window.isReleasedWhenClosed = false
-        window.title = "New File"
+        window.title = L10n.text("newFile.title")
         window.delegate = self
         window.contentView = NSHostingView(
             rootView: NewFileView(
@@ -137,7 +137,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     }
 
     private func showError(_ error: Error) {
-        let message = (error as? LocalizedError)?.errorDescription ?? error.localizedDescription
+        let message = L10n.actionErrorMessage(error)
         let window = NSWindow(
             contentRect: NSRect(x: 0, y: 0, width: 420, height: 160),
             styleMask: [.titled, .closable],
