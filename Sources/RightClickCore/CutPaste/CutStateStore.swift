@@ -5,7 +5,7 @@ public struct CutStateStore {
 
     public let directory: URL
 
-    public init(directory: URL = SettingsStore.defaultDirectory) {
+    public init(directory: URL = SettingsStore.defaultDirectory()) {
         self.directory = directory
     }
 

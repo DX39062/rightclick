@@ -34,4 +34,51 @@ final class SettingsStoreTests: XCTestCase {
 
         XCTAssertEqual(try store.load(), AppSettings.default)
     }
+
+    func testMigratesLegacySettingsWhenSharedSettingsAreMissing() throws {
+        let legacyURL = directory.appendingPathComponent("legacy-settings.json")
+        let sharedDirectory = directory.appendingPathComponent("shared", isDirectory: true)
+        let legacySettings = AppSettings(isNewFileEnabled: false, isCutPasteEnabled: true)
+        try JSONEncoder().encode(legacySettings).write(to: legacyURL)
+
+        let store = SettingsStore(directory: sharedDirectory, legacySettingsURL: legacyURL)
+
+        XCTAssertEqual(try store.load(), legacySettings)
+        XCTAssertEqual(try SettingsStore(directory: sharedDirectory).load(), legacySettings)
+    }
+
+    func testMainAppUsesFinderExtensionContainerForSharedSettings() {
+        let home = URL(fileURLWithPath: "/tmp/rightclick-home", isDirectory: true)
+        let appSupport = home.appendingPathComponent("Library/Application Support", isDirectory: true)
+
+        let directory = SettingsStore.defaultDirectory(
+            bundleIdentifier: "local.rightclick.RightClick",
+            homeDirectory: home,
+            applicationSupportDirectory: appSupport
+        )
+
+        XCTAssertEqual(
+            directory,
+            home
+                .appendingPathComponent("Library/Containers/local.rightclick.RightClick.FinderExtension/Data/Library/Application Support", isDirectory: true)
+                .appendingPathComponent("RightClick", isDirectory: true)
+        )
+    }
+
+    func testFinderExtensionUsesOwnApplicationSupportDirectory() {
+        let home = URL(fileURLWithPath: "/tmp/rightclick-home", isDirectory: true)
+        let appSupport = home
+            .appendingPathComponent("Library/Containers/local.rightclick.RightClick.FinderExtension/Data/Library/Application Support", isDirectory: true)
+
+        let directory = SettingsStore.defaultDirectory(
+            bundleIdentifier: "local.rightclick.RightClick.FinderExtension",
+            homeDirectory: home,
+            applicationSupportDirectory: appSupport
+        )
+
+        XCTAssertEqual(
+            directory,
+            appSupport.appendingPathComponent("RightClick", isDirectory: true)
+        )
+    }
 }
