@@ -2,3 +2,5 @@
 .worktrees/
 .build/
 .swiftpm/
+AGENTS.md
+.DS_Store
