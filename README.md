@@ -46,9 +46,10 @@ Install the locally built app:
 
 ```bash
 ditto .build/Xcode/Build/Products/Debug/RightClick.app /Applications/RightClick.app
+sudo xattr -cr /Applications/RightClick.app
 ```
 
-The project uses Xcode's local signing for Debug builds, so a paid Apple Developer account is not required. The app is intended for local source builds, not notarized binary distribution.
+`xattr -cr` removes quarantine metadata that macOS may attach to unsigned or locally built apps. The project uses Xcode's local signing for Debug builds, so a paid Apple Developer account is not required. The app is intended for local source builds, not notarized binary distribution.
 
 ## Enable Finder Extension
 
@@ -59,6 +60,8 @@ The project uses Xcode's local signing for Debug builds, so a paid Apple Develop
 5. Relaunch Finder if the menu item does not appear immediately:
 
 ```bash
+pluginkit -a /Applications/RightClick.app/Contents/PlugIns/RightClickFinderExtension.appex
+pluginkit -e use -i local.rightclick.RightClick.FinderExtension
 killall Finder
 ```
 
@@ -115,6 +118,8 @@ After pulling new source changes, rebuild and reinstall:
 git pull
 xcodebuild -project RightClick.xcodeproj -scheme RightClick -configuration Debug -destination 'platform=macOS' -derivedDataPath .build/Xcode build
 ditto .build/Xcode/Build/Products/Debug/RightClick.app /Applications/RightClick.app
+sudo xattr -cr /Applications/RightClick.app
+pluginkit -a /Applications/RightClick.app/Contents/PlugIns/RightClickFinderExtension.appex
 pluginkit -e use -i local.rightclick.RightClick.FinderExtension
 killall Finder
 ```
@@ -129,6 +134,7 @@ If `New File...`, `Cut`, or `Paste` does not appear in Finder:
 4. Re-enable the Finder extension from Terminal:
 
 ```bash
+pluginkit -a /Applications/RightClick.app/Contents/PlugIns/RightClickFinderExtension.appex
 pluginkit -e use -i local.rightclick.RightClick.FinderExtension
 killall Finder
 ```
