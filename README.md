@@ -75,7 +75,7 @@ A leading `+` means the extension is enabled.
 
 ## Usage
 
-Open RightClick and choose RightClick > Settings to enable or disable modules. Settings are stored locally under `~/Library/Containers/local.rightclick.RightClick.FinderExtension/Data/Library/Application Support/RightClick` so the sandboxed Finder extension can read them. Older settings from `~/Library/Application Support/RightClick` are migrated automatically when the app reads them.
+Open RightClick to show Settings and enable or disable modules. The app runs without a Dock icon so Finder actions can complete quietly. Settings are stored locally under `~/Library/Containers/local.rightclick.RightClick.FinderExtension/Data/Library/Application Support/RightClick` so the sandboxed Finder extension can read them. Older settings from `~/Library/Application Support/RightClick` are migrated automatically when the app reads them.
 
 Settings usually apply on the next Finder right-click. If an old menu remains visible, use Restart Finder in settings or run:
 
@@ -130,7 +130,7 @@ If `New File...`, `Cut`, or `Paste` does not appear in Finder:
 
 1. Confirm `/Applications/RightClick.app` exists.
 2. Confirm the Finder extension is enabled in System Settings.
-3. Open RightClick and choose RightClick > Settings to confirm the module is enabled.
+3. Open RightClick to show Settings and confirm the module is enabled.
 4. Re-enable the Finder extension from Terminal:
 
 ```bash

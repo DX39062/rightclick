@@ -7,8 +7,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     private var requestedTargetDirectory: URL?
     private var newFileWindow: NSWindow?
     private var errorWindow: NSWindow?
+    private var settingsWindow: NSWindow?
+    private var didHandleURLAction = false
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in
+            guard let self, !self.didHandleURLAction, self.newFileWindow == nil, self.errorWindow == nil else {
+                return
+            }
+            self.showSettingsWindow()
+        }
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
@@ -20,6 +28,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
     }
 
     func application(_ application: NSApplication, open urls: [URL]) {
+        didHandleURLAction = true
+
         guard let url = urls.first, url.scheme == "rightclick" else {
             return
         }
@@ -106,6 +116,29 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         newFileWindow = window
     }
 
+    private func showSettingsWindow() {
+        if let window = settingsWindow {
+            window.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+            return
+        }
+
+        let window = NSWindow(
+            contentRect: NSRect(x: 0, y: 0, width: 360, height: 210),
+            styleMask: [.titled, .closable],
+            backing: .buffered,
+            defer: false
+        )
+        window.isReleasedWhenClosed = false
+        window.title = L10n.text("settings.title")
+        window.delegate = self
+        window.contentView = NSHostingView(rootView: SettingsView())
+        window.center()
+        window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
+        settingsWindow = window
+    }
+
     private func handleCut(_ request: FinderActionRequest) {
         guard !request.context.selectedItems.isEmpty else {
             showError(ActionError.noSelectedItems)
@@ -115,6 +148,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
         do {
             let state = CutState(itemURLs: request.context.selectedItems.map { $0.url })
             try CutStateStore().save(state)
+            do {
+                try SystemCutPasteboardWriter().write(state)
+            } catch {
+                NSLog("RightClick system pasteboard sync failed: \(error.localizedDescription)")
+            }
             NSApp.terminate(nil)
         } catch {
             showError(error)
@@ -168,6 +206,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
                 self.newFileWindow = nil
             } else if window === self.errorWindow {
                 self.errorWindow = nil
+            } else if window === self.settingsWindow {
+                self.settingsWindow = nil
             }
         }
     }
