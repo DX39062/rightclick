@@ -92,6 +92,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             backing: .buffered,
             defer: false
         )
+        window.isReleasedWhenClosed = false
         window.title = "New File"
         window.delegate = self
         window.contentView = NSHostingView(
@@ -143,6 +144,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             backing: .buffered,
             defer: false
         )
+        window.isReleasedWhenClosed = false
         window.title = "RightClick"
         window.delegate = self
         window.contentView = NSHostingView(rootView: ErrorView(message: message))
@@ -157,10 +159,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate {
             return
         }
 
-        if window === newFileWindow {
-            newFileWindow = nil
-        } else if window === errorWindow {
-            errorWindow = nil
+        DispatchQueue.main.async { [weak self, weak window] in
+            guard let self, let window else {
+                return
+            }
+
+            if window === self.newFileWindow {
+                self.newFileWindow = nil
+            } else if window === self.errorWindow {
+                self.errorWindow = nil
+            }
         }
     }
 }
